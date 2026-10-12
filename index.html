@@ -15,18 +15,21 @@
 
 <!-- Open Graph / Соцсети (Telegram, VK, WhatsApp, Discord) -->
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://fastlabs-lebi.onrender.com/">
 <meta property="og:title" content="Системное программирование — Лабораторные 1–9 | Ретунский Савелий">
 <meta property="og:description" content="Интерактивная панель проверки лабораторных работ. Просмотр отчётов, интерактивный bash-терминал, верификация Valgrind. Группа 24140.">
-<meta property="og:image" content="og-preview.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="675">
+<meta property="og:image" content="https://fastlabs-lebi.onrender.com/og-preview.jpg">
+<meta property="og:image:secure_url" content="https://fastlabs-lebi.onrender.com/og-preview.jpg">
+<meta property="og:image:width" content="1376">
+<meta property="og:image:height" content="768">
 <meta property="og:image:type" content="image/jpeg">
 
 <!-- Twitter / X Cards -->
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://fastlabs-lebi.onrender.com/">
 <meta name="twitter:title" content="Системное программирование — Лабораторные 1–9 | Ретунский Савелий">
 <meta name="twitter:description" content="Интерактивная панель проверки лабораторных работ. Просмотр отчётов, bash-терминал, верификация Valgrind.">
-<meta name="twitter:image" content="og-preview.jpg">
+<meta name="twitter:image" content="https://fastlabs-lebi.onrender.com/og-preview.jpg">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -770,8 +773,6 @@ footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:w
 .term-input{
   flex:1;min-width:0;background:none;border:0;outline:0;color:#FFF;font-family:var(--mono);font-size:12.5px;line-height:1.65;padding:0;
 }
-.ticker .pr{cursor:pointer;transition:color .2s,text-shadow .2s;text-decoration:underline;text-underline-offset:3px}
-.ticker .pr:hover{color:#FFF;text-shadow:0 0 10px var(--acc)}
 
 
 
@@ -808,7 +809,7 @@ footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:w
       <span class="ln"><span><span class="odo" id="odo" aria-hidden="true" title="Нажмите, чтобы прокрутить"></span>минут</span></span>
     </h1>
 
-    <div class="ticker" aria-live="off" style="cursor:pointer" title="Нажмите, чтобы открыть консоль bash (или нажмите `)">
+    <div class="ticker" aria-live="off">
       <span class="pr">$</span> <span><span id="tkText"></span><i class="caret"></i></span>
       <div class="bar"><i id="tkBar"></i></div>
     </div>
@@ -2407,16 +2408,6 @@ if (termClearBtn) termClearBtn.onclick = () => { if (termHistory) termHistory.in
 if (termMaxBtn) termMaxBtn.onclick = () => { if (termWin) termWin.classList.toggle('maximized'); };
 if (termBody) termBody.onclick = () => termInput && termInput.focus();
 
-// Клик по тизеру bash на главной открывает терминал
-const tickerEl = document.querySelector('.ticker');
-if (tickerEl) {
-  tickerEl.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    showTerminal();
-  });
-}
-
 const TERM_COMMANDS = ['help', 'ls', 'dir', 'cat', 'open', 'view', 'check', 'status', 'valgrind', 'test', 'theme', 'whoami', 'uname', 'date', 'ps', 'echo', 'clear', 'reset', 'exit'];
 
 function executeTermCommand(raw) {
@@ -2730,13 +2721,13 @@ addEventListener('keydown', e => {
   // 1. Если открыт терминал
   if (termModal && termModal.classList.contains('on')) {
     if (e.key === 'Escape') { hideTerminal(); return; }
-    if ((e.key === '`' || e.key === '~') && e.target !== termInput) {
+    if ((e.key === '`' || e.key === '~' || e.code === 'Backquote' || e.key === 'ё' || e.key === 'Ё') && e.target !== termInput) {
       e.preventDefault(); hideTerminal(); return;
     }
     return;
   }
-  // 2. Открытие терминала по клавише ` или ~ (если не в строке поиска)
-  if ((e.key === '`' || e.key === '~') && e.target !== q) {
+  // 2. Открытие терминала только по клавише ~ / ` / ё
+  if ((e.key === '`' || e.key === '~' || e.code === 'Backquote' || e.key === 'ё' || e.key === 'Ё') && e.target !== q) {
     e.preventDefault();
     showTerminal();
     return;
